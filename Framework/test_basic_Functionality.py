@@ -48,3 +48,17 @@ def test_instruction_following(client_model,evaluation_model_factory):
     assert_test(testcase,[response_metric])
     print(f'Score is {response_metric.score}')
     print(f'reasoning is {response_metric.reason}')
+
+def test_simple_qa(client_model,evaluation_model_factory):
+    evaluation_model = evaluation_model_factory(temperature=0.0)
+    prompt="What is the capital of France?"
+    response = client_model.generateText(prompt)
+    response_text = response['text']
+    testcase=LLMTestCase(input=prompt,actual_output=response_text)
+    factual_metric=GEval(name='simple_qa',criteria="""
+    Determine whether the model correctly identifies capital of France
+    """,model=evaluation_model,threshold=0.8,
+          evaluation_params=[LLMTestCaseParams.INPUT,LLMTestCaseParams.ACTUAL_OUTPUT])
+    assert_test(testcase,[factual_metric])
+    print(f'score is {factual_metric.score}')
+    print(f'reasoning is {factual_metric.reason}')

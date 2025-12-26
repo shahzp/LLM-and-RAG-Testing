@@ -6,7 +6,7 @@ from Framework.OpenAITestClient import OpenAITestCleint
 @pytest.fixture(scope='session')
 def base_model():
     return {
-        'model': 'gpt-4o-mini'
+        'model': 'gpt-4o'
     }
 
 @pytest.fixture()
